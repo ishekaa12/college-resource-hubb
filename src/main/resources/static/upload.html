@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Resource - College Resource Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <a href="index.html" class="back-link">← Back to Home</a>
+            <h1>📤 Upload New Resource</h1>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container">
+    <div class="upload-container">
+        <form id="uploadForm" class="upload-form">
+            <!-- File Upload Area -->
+            <div class="file-upload-area" id="fileUploadArea">
+                <div class="upload-icon">📄</div>
+                <h3>Drag & drop your file here</h3>
+                <p>or</p>
+                <label for="fileInput" class="btn btn-secondary">Choose File</label>
+                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required hidden>
+                <p class="file-hint">Supported: PDF, JPG, PNG (Max 10MB)</p>
+            </div>
+
+            <div id="filePreview" class="file-preview" style="display: none;">
+                <div class="file-info">
+                    <span class="file-icon">📄</span>
+                    <div class="file-details">
+                        <p class="file-name" id="fileName"></p>
+                        <p class="file-size" id="fileSize"></p>
+                    </div>
+                    <button type="button" class="remove-file" id="removeFile">✕</button>
+                </div>
+            </div>
+
+            <!-- Form Fields -->
+            <div class="form-group">
+                <label for="title">Resource Title *</label>
+                <input type="text" id="title" placeholder="e.g., Data Structures Unit 1 Notes" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="subject">Subject *</label>
+                    <input type="text" id="subject" placeholder="e.g., Data Structures" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="semester">Semester *</label>
+                    <select id="semester" required>
+                        <option value="">Select Semester</option>
+                        <option value="1">Semester 1</option>
+                        <option value="2">Semester 2</option>
+                        <option value="3">Semester 3</option>
+                        <option value="4">Semester 4</option>
+                        <option value="5">Semester 5</option>
+                        <option value="6">Semester 6</option>
+                        <option value="7">Semester 7</option>
+                        <option value="8">Semester 8</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="type">Type *</label>
+                    <select id="type" required>
+                        <option value="">Select Type</option>
+                        <option value="notes">Notes</option>
+                        <option value="papers">Previous Papers</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="uploaderName">Your Name (Optional)</label>
+                    <input type="text" id="uploaderName" placeholder="Anonymous">
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-actions">
+                <a href="index.html" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <span id="submitText">Upload Resource</span>
+                    <span id="submitLoader" class="btn-loader" style="display: none;">
+                            <span class="spinner-small"></span> Uploading...
+                        </span>
+                </button>
+            </div>
+        </form>
+
+        <!-- Success Message -->
+        <div id="successMessage" class="message success" style="display: none;">
+            <span class="message-icon">✅</span>
+            <div>
+                <strong>Success!</strong>
+                <p>Your resource has been uploaded successfully!</p>
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="message error" style="display: none;">
+            <span class="message-icon">❌</span>
+            <div>
+                <strong>Error!</strong>
+                <p id="errorText">Something went wrong. Please try again.</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="js/upload.js"></script>
+</body>
+</html>

@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/resources")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class ResourceController {
 
     @Autowired
@@ -29,13 +29,13 @@ public class ResourceController {
     }
 
     // Upload new resource
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> uploadResource(
             @RequestParam("title") String title,
             @RequestParam("subject") String subject,
             @RequestParam("semester") Integer semester,
             @RequestParam("type") String type,
-            @RequestParam(value = "uploaderName", required = false) String uploaderName,
+            @RequestParam(value = "uploaderName", required = false, defaultValue = "Anonymous") String uploaderName,
             @RequestParam("file") MultipartFile file) {
 
         try {
@@ -44,6 +44,7 @@ public class ResourceController {
             );
             return ResponseEntity.ok(resource);
         } catch (IOException e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Failed to upload file: " + e.getMessage());
         }
@@ -51,8 +52,9 @@ public class ResourceController {
 
     // Get all resources
     @GetMapping
-    public List<Resource> getAllResources() {
-        return resourceService.getAllResources();
+    public ResponseEntity<List<Resource>> getAllResources() {
+        List<Resource> resources = resourceService.getAllResources();
+        return ResponseEntity.ok(resources);
     }
 
     // Get resource by ID
@@ -84,7 +86,7 @@ public class ResourceController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=" + resource.getFileName());
+                "attachment; filename=\"" + resource.getFileName() + "\"");
 
         return ResponseEntity.ok()
                 .headers(headers)

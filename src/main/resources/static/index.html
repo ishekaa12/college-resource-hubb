@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Resource Hub</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+    <div class="container">
+        <div class="header-content">
+            <h1>🎓 College Resource Hub</h1>
+            <p class="tagline">Your one-stop shop for study materials</p>
+        </div>
+        <a href="upload.html" class="btn btn-primary">+ Upload Resource</a>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="container">
+    <!-- Search and Filter Section -->
+    <section class="search-section">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Search resources..." class="search-input">
+        </div>
+
+        <div class="filters">
+            <select id="subjectFilter" class="filter-select">
+                <option value="">All Subjects</option>
+            </select>
+
+            <select id="semesterFilter" class="filter-select">
+                <option value="">All Semesters</option>
+                <option value="1">Semester 1</option>
+                <option value="2">Semester 2</option>
+                <option value="3">Semester 3</option>
+                <option value="4">Semester 4</option>
+                <option value="5">Semester 5</option>
+                <option value="6">Semester 6</option>
+                <option value="7">Semester 7</option>
+                <option value="8">Semester 8</option>
+            </select>
+
+            <select id="typeFilter" class="filter-select">
+                <option value="">All Types</option>
+                <option value="notes">Notes</option>
+                <option value="papers">Previous Papers</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+    </section>
+
+    <!-- Resources List -->
+    <section class="resources-section">
+        <div class="section-header">
+            <h2>Available Resources</h2>
+            <span id="resourceCount" class="count-badge">0 resources</span>
+        </div>
+
+        <div id="loadingSpinner" class="loading">
+            <div class="spinner"></div>
+            <p>Loading resources...</p>
+        </div>
+
+        <div id="resourcesList" class="resources-grid">
+            <!-- Resources will be loaded here dynamically -->
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-icon">📚</div>
+            <h3>No resources found</h3>
+            <p>Be the first to upload a resource!</p>
+            <a href="upload.html" class="btn btn-primary">Upload Now</a>
+        </div>
+    </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="container">
+        <p>Built with ❤️ for students, by a student | <a href="https://github.com/ishekaa12/college-resource-hubb" target="_blank">View on GitHub</a></p>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
