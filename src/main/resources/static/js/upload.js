@@ -1,6 +1,5 @@
 // API Base URL
 const API_BASE_URL = 'https://umbrellaless-condylar-maryln.ngrok-free.dev/api/resources'; // or whatever port
-
 // DOM Elements
 const uploadForm = document.getElementById('uploadForm');
 const fileInput = document.getElementById('fileInput');
@@ -20,19 +19,16 @@ let selectedFile = null;
 
 // Setup event listeners
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Upload page - API_BASE_URL:', API_BASE_URL); // Debug log
     setupFileUpload();
     setupFormSubmit();
 });
 
 // File upload setup
 function setupFileUpload() {
-    // File input change
     fileInput.addEventListener('change', handleFileSelect);
-
-    // Remove file button
     removeFileBtn.addEventListener('click', clearFile);
 
-    // Drag and drop
     fileUploadArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         fileUploadArea.classList.add('dragover');
@@ -60,7 +56,6 @@ function handleFileSelect() {
 
     if (!file) return;
 
-    // Validate file type
     const validTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
     if (!validTypes.includes(file.type)) {
         alert('Please select a PDF, JPG, or PNG file');
@@ -68,10 +63,9 @@ function handleFileSelect() {
         return;
     }
 
-    // Validate file size (10MB)
-    const maxSize = 200 * 1024 * 1024;
+    const maxSize = 50 * 1024 * 1024; // 50MB
     if (file.size > maxSize) {
-        alert('File size must be less than 200MB');
+        alert('File size must be less than 50MB');
         clearFile();
         return;
     }
@@ -115,11 +109,9 @@ function setupFormSubmit() {
 // Upload resource to API
 async function uploadResource() {
     try {
-        // Show loading state
         setLoadingState(true);
         hideMessages();
 
-        // Prepare form data
         const formData = new FormData();
         formData.append('file', selectedFile);
         formData.append('title', document.getElementById('title').value);
@@ -132,8 +124,9 @@ async function uploadResource() {
             formData.append('uploaderName', uploaderName);
         }
 
-        // Send request
-        const response = await fetch(`${API_URL}/upload`, {
+        console.log('Uploading to:', `${API_BASE_URL}/upload`); // Debug log
+
+        const response = await fetch(`${API_BASE_URL}/upload`, {
             method: 'POST',
             body: formData
         });
@@ -146,10 +139,8 @@ async function uploadResource() {
         const result = await response.json();
         console.log('Upload successful:', result);
 
-        // Show success message
         showSuccess();
 
-        // Reset form after 2 seconds and redirect
         setTimeout(() => {
             window.location.href = 'index.html';
         }, 2000);
@@ -162,7 +153,6 @@ async function uploadResource() {
 }
 
 // UI State Functions
-
 function setLoadingState(isLoading) {
     submitBtn.disabled = isLoading;
 
@@ -196,7 +186,6 @@ function hideMessages() {
 }
 
 // Utility Functions
-
 function formatFileSize(bytes) {
     if (bytes < 1024) return bytes + ' B';
     if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';

@@ -1,6 +1,6 @@
 // API Base URL
 // Replace with YOUR ngrok URL (the one you just got)
-const API_BASE_URL = 'https://umbrellaless-condylar-maryln.ngrok-free.dev/api/resources';
+const API_BASE_URL = 'https:// https://umbrellaless-condylar-maryln.ngrok-free.dev/api/resources';
 
 // DOM Elements
 const resourcesList = document.getElementById('resourcesList');
@@ -18,6 +18,7 @@ let filteredResources = [];
 
 // Load resources when page loads
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('API_BASE_URL:', API_BASE_URL); // Debug log
     loadResources();
     setupEventListeners();
 });
@@ -25,17 +26,19 @@ document.addEventListener('DOMContentLoaded', () => {
 // Fetch resources from API
 async function loadResources() {
     try {
+        console.log('Fetching from:', API_BASE_URL); // Debug log
         showLoading();
 
         const response = await fetch(API_BASE_URL);
 
         if (!response.ok) {
-            throw new Error('Failed to fetch resources');
+            throw new Error('Failed to fetch resources: ' + response.status);
         }
 
         allResources = await response.json();
         filteredResources = [...allResources];
 
+        console.log('Loaded resources:', allResources.length); // Debug log
         hideLoading();
         displayResources(filteredResources);
         populateSubjectFilter();
@@ -44,7 +47,7 @@ async function loadResources() {
         console.error('Error loading resources:', error);
         hideLoading();
         showEmptyState();
-        alert('Failed to load resources. Make sure your backend is running on port 8080!');
+        alert('Failed to load resources. Error: ' + error.message);
     }
 }
 
@@ -52,7 +55,9 @@ async function loadResources() {
 function displayResources(resources) {
     resourceCount.textContent = `${resources.length} resource${resources.length !== 1 ? 's' : ''}`;
 
-    updateStatistics();
+    if (document.getElementById('totalResources')) {
+        updateStatistics();
+    }
 
     if (resources.length === 0) {
         showEmptyState();
@@ -61,7 +66,6 @@ function displayResources(resources) {
 
     emptyState.style.display = 'none';
     resourcesList.style.display = 'grid';
-
     resourcesList.innerHTML = '';
 
     resources.forEach(resource => {
@@ -106,13 +110,19 @@ async function downloadResource(id) {
     try {
         const resource = allResources.find(r => r.id === id);
         window.open(`${API_BASE_URL}/download/${id}`, '_blank');
-        showToast(`Downloading "${resource.title}"...`);
+
+        if (typeof showToast === 'function') {
+            showToast(`Downloading "${resource.title}"...`);
+        }
+
         setTimeout(() => {
             loadResources();
         }, 1000);
     } catch (error) {
         console.error('Error downloading resource:', error);
-        showToast('Failed to download resource', 'error');
+        if (typeof showToast === 'function') {
+            showToast('Failed to download resource', 'error');
+        }
     }
 }
 
@@ -123,6 +133,21 @@ function viewDetails(id) {
 
     const modal = document.getElementById('detailsModal');
     const modalBody = document.getElementById('modalBody');
+
+    if (!modal || !modalBody) {
+        // Fallback to alert if modal doesn't exist
+        alert(`
+Title: ${resource.title}
+Subject: ${resource.subject}
+Semester: ${resource.semester}
+Type: ${resource.type}
+File: ${resource.fileName}
+Size: ${formatFileSize(resource.fileSize)}
+Uploaded: ${formatDate(resource.uploadDate)}
+Downloads: ${resource.downloadCount}
+        `);
+        return;
+    }
 
     const uploaderName = resource.uploaderName || 'Anonymous';
 
@@ -177,15 +202,17 @@ function viewDetails(id) {
 // Close modal
 function closeModal() {
     const modal = document.getElementById('detailsModal');
-    modal.classList.remove('active');
+    if (modal) {
+        modal.classList.remove('active');
+    }
 }
 
 // Setup event listeners
 function setupEventListeners() {
-    searchInput.addEventListener('input', filterResources);
-    subjectFilter.addEventListener('change', filterResources);
-    semesterFilter.addEventListener('change', filterResources);
-    typeFilter.addEventListener('change', filterResources);
+    if (searchInput) searchInput.addEventListener('input', filterResources);
+    if (subjectFilter) subjectFilter.addEventListener('change', filterResources);
+    if (semesterFilter) semesterFilter.addEventListener('change', filterResources);
+    if (typeFilter) typeFilter.addEventListener('change', filterResources);
 }
 
 // Filter resources
@@ -210,7 +237,12 @@ function filterResources() {
 
 // Populate subject filter
 function populateSubjectFilter() {
+    if (!subjectFilter) return;
+
     const subjects = [...new Set(allResources.map(r => r.subject))].sort();
+
+    // Clear existing options except first one
+    subjectFilter.querySelectorAll('option:not(:first-child)').forEach(opt => opt.remove());
 
     subjects.forEach(subject => {
         const option = document.createElement('option');
@@ -227,26 +259,31 @@ function updateStatistics() {
     const uniqueSubjects = new Set(allResources.map(r => r.subject)).size;
     const uniqueSemesters = new Set(allResources.map(r => r.semester)).size;
 
-    document.getElementById('totalResources').textContent = totalResources;
-    document.getElementById('totalDownloads').textContent = totalDownloads;
-    document.getElementById('totalSubjects').textContent = uniqueSubjects;
-    document.getElementById('totalSemesters').textContent = uniqueSemesters;
+    const totalResourcesEl = document.getElementById('totalResources');
+    const totalDownloadsEl = document.getElementById('totalDownloads');
+    const totalSubjectsEl = document.getElementById('totalSubjects');
+    const totalSemestersEl = document.getElementById('totalSemesters');
+
+    if (totalResourcesEl) totalResourcesEl.textContent = totalResources;
+    if (totalDownloadsEl) totalDownloadsEl.textContent = totalDownloads;
+    if (totalSubjectsEl) totalSubjectsEl.textContent = uniqueSubjects;
+    if (totalSemestersEl) totalSemestersEl.textContent = uniqueSemesters;
 }
 
 // Utility Functions
 function showLoading() {
-    loadingSpinner.style.display = 'block';
-    resourcesList.style.display = 'none';
-    emptyState.style.display = 'none';
+    if (loadingSpinner) loadingSpinner.style.display = 'block';
+    if (resourcesList) resourcesList.style.display = 'none';
+    if (emptyState) emptyState.style.display = 'none';
 }
 
 function hideLoading() {
-    loadingSpinner.style.display = 'none';
+    if (loadingSpinner) loadingSpinner.style.display = 'none';
 }
 
 function showEmptyState() {
-    emptyState.style.display = 'block';
-    resourcesList.style.display = 'none';
+    if (emptyState) emptyState.style.display = 'block';
+    if (resourcesList) resourcesList.style.display = 'none';
 }
 
 function getFileIcon(type) {
@@ -281,6 +318,7 @@ function formatFileSize(bytes) {
 }
 
 function escapeHtml(text) {
+    if (!text) return '';
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
