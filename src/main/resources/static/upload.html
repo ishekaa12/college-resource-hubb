@@ -13,6 +13,9 @@
         <div class="header-content">
             <a href="index.html" class="back-link">← Back to Home</a>
             <h1>📤 Upload New Resource</h1>
+            <p style="font-size: 13px; color: #666; margin-top: 5px;">
+                <a href="guidelines.html" style="color: #667eea;">📜 View upload guidelines</a>
+            </p>
         </div>
     </div>
 </header>
@@ -28,7 +31,7 @@
                 <p>or</p>
                 <label for="fileInput" class="btn btn-secondary">Choose File</label>
                 <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required hidden>
-                <p class="file-hint">Supported: PDF, JPG, PNG (Max 10MB)</p>
+                <p class="file-hint">Supported: PDF, JPG, PNG (Max 200MB)</p>
             </div>
 
             <div id="filePreview" class="file-preview" style="display: none;">
@@ -70,22 +73,22 @@
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="type">Type *</label>
-                    <select id="type" required>
-                        <option value="">Select Type</option>
-                        <option value="notes">Notes</option>
-                        <option value="papers">Previous Papers</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
+            <div class="form-group">
+                <label for="type">Type *</label>
+                <select id="type" required>
+                    <option value="">Select Type</option>
+                    <option value="notes">Notes</option>
+                    <option value="papers">Previous Papers</option>
+                    <option value="books">Books/Textbooks</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
 
                 <div class="form-group">
                     <label for="uploaderName">Your Name (Optional)</label>
                     <input type="text" id="uploaderName" placeholder="Anonymous">
                 </div>
-            </div>
+
 
             <!-- Submit Button -->
             <div class="form-actions">
@@ -118,7 +121,17 @@
         </div>
     </div>
 </main>
-
+<footer class="footer">
+    <div class="container">
+        <p>
+            Built with ❤️ by <strong>Isheka Singh</strong> for UMIT students
+            <br>
+            <a href="https://github.com/ishekaa12/college-resource-hubb" target="_blank">View on GitHub</a>
+            | <a href="guidelines.html">Guidelines</a>
+            | Problems? Contact: ishekasingh26@gmail.com
+        </p>
+    </div>
+</footer>
 <script src="js/upload.js"></script>
 </body>
 </html>

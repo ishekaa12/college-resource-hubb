@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:8081/api/resources';  // or whatever port
+const API_URL = 'http://localhost:8080/api/resources';  // or whatever port
 
 // DOM Elements
 const uploadForm = document.getElementById('uploadForm');
@@ -69,9 +69,9 @@ function handleFileSelect() {
     }
 
     // Validate file size (10MB)
-    const maxSize = 10 * 1024 * 1024;
+    const maxSize = 200 * 1024 * 1024;
     if (file.size > maxSize) {
-        alert('File size must be less than 10MB');
+        alert('File size must be less than 200MB');
         clearFile();
         return;
     }

@@ -1,5 +1,6 @@
 // API Base URL
-const API_URL = 'http://localhost:8081/api/resources';  // or whatever port
+const API_BASE_URL = `http://${window.location.hostname}:8080/api/resources`;
+
 // DOM Elements
 const resourcesList = document.getElementById('resourcesList');
 const loadingSpinner = document.getElementById('loadingSpinner');
@@ -25,7 +26,7 @@ async function loadResources() {
     try {
         showLoading();
 
-        const response = await fetch(API_URL);
+        const response = await fetch(API_BASE_URL);
 
         if (!response.ok) {
             throw new Error('Failed to fetch resources');
@@ -42,49 +43,30 @@ async function loadResources() {
         console.error('Error loading resources:', error);
         hideLoading();
         showEmptyState();
-        alert('Failed to load resources. Make sure your backend is running!');
+        alert('Failed to load resources. Make sure your backend is running on port 8080!');
     }
 }
 
 // Display resources on page
 function displayResources(resources) {
-    // Update count
     resourceCount.textContent = `${resources.length} resource${resources.length !== 1 ? 's' : ''}`;
 
-    // Calculate and update statistics
     updateStatistics();
 
-    // Show empty state if no resources
     if (resources.length === 0) {
         showEmptyState();
         return;
     }
 
-    // Hide empty state
     emptyState.style.display = 'none';
     resourcesList.style.display = 'grid';
 
-    // Clear existing resources
     resourcesList.innerHTML = '';
 
-    // Create resource cards
     resources.forEach(resource => {
         const card = createResourceCard(resource);
         resourcesList.appendChild(card);
     });
-}
-
-// Update statistics
-function updateStatistics() {
-    const totalResources = allResources.length;
-    const totalDownloads = allResources.reduce((sum, r) => sum + (r.downloadCount || 0), 0);
-    const uniqueSubjects = new Set(allResources.map(r => r.subject)).size;
-    const uniqueSemesters = new Set(allResources.map(r => r.semester)).size;
-
-    document.getElementById('totalResources').textContent = totalResources;
-    document.getElementById('totalDownloads').textContent = totalDownloads;
-    document.getElementById('totalSubjects').textContent = uniqueSubjects;
-    document.getElementById('totalSemesters').textContent = uniqueSemesters;
 }
 
 // Create a resource card element
@@ -122,25 +104,18 @@ function createResourceCard(resource) {
 async function downloadResource(id) {
     try {
         const resource = allResources.find(r => r.id === id);
-
-        // Open download link in new tab
-        window.open(`${API_URL}/download/${id}`, '_blank');
-
-        // Show toast
+        window.open(`${API_BASE_URL}/download/${id}`, '_blank');
         showToast(`Downloading "${resource.title}"...`);
-
-        // Reload resources to update download count
         setTimeout(() => {
             loadResources();
         }, 1000);
-
     } catch (error) {
         console.error('Error downloading resource:', error);
         showToast('Failed to download resource', 'error');
     }
 }
 
-// View resource details in modal
+// View resource details
 function viewDetails(id) {
     const resource = allResources.find(r => r.id === id);
     if (!resource) return;
@@ -191,7 +166,6 @@ function viewDetails(id) {
 
     modal.classList.add('active');
 
-    // Close modal when clicking outside
     modal.onclick = (e) => {
         if (e.target === modal) {
             closeModal();
@@ -205,7 +179,7 @@ function closeModal() {
     modal.classList.remove('active');
 }
 
-// Setup event listeners for filters
+// Setup event listeners
 function setupEventListeners() {
     searchInput.addEventListener('input', filterResources);
     subjectFilter.addEventListener('change', filterResources);
@@ -213,7 +187,7 @@ function setupEventListeners() {
     typeFilter.addEventListener('change', filterResources);
 }
 
-// Filter resources based on search and filters
+// Filter resources
 function filterResources() {
     const searchTerm = searchInput.value.toLowerCase();
     const selectedSubject = subjectFilter.value;
@@ -221,17 +195,10 @@ function filterResources() {
     const selectedType = typeFilter.value;
 
     filteredResources = allResources.filter(resource => {
-        // Search filter
         const matchesSearch = resource.title.toLowerCase().includes(searchTerm) ||
                             resource.subject.toLowerCase().includes(searchTerm);
-
-        // Subject filter
         const matchesSubject = !selectedSubject || resource.subject === selectedSubject;
-
-        // Semester filter
         const matchesSemester = !selectedSemester || resource.semester.toString() === selectedSemester;
-
-        // Type filter
         const matchesType = !selectedType || resource.type === selectedType;
 
         return matchesSearch && matchesSubject && matchesSemester && matchesType;
@@ -240,7 +207,7 @@ function filterResources() {
     displayResources(filteredResources);
 }
 
-// Populate subject filter with unique subjects
+// Populate subject filter
 function populateSubjectFilter() {
     const subjects = [...new Set(allResources.map(r => r.subject))].sort();
 
@@ -252,8 +219,20 @@ function populateSubjectFilter() {
     });
 }
 
-// Utility Functions
+// Update statistics
+function updateStatistics() {
+    const totalResources = allResources.length;
+    const totalDownloads = allResources.reduce((sum, r) => sum + (r.downloadCount || 0), 0);
+    const uniqueSubjects = new Set(allResources.map(r => r.subject)).size;
+    const uniqueSemesters = new Set(allResources.map(r => r.semester)).size;
 
+    document.getElementById('totalResources').textContent = totalResources;
+    document.getElementById('totalDownloads').textContent = totalDownloads;
+    document.getElementById('totalSubjects').textContent = uniqueSubjects;
+    document.getElementById('totalSemesters').textContent = uniqueSemesters;
+}
+
+// Utility Functions
 function showLoading() {
     loadingSpinner.style.display = 'block';
     resourcesList.style.display = 'none';
@@ -273,6 +252,7 @@ function getFileIcon(type) {
     const icons = {
         'notes': '📝',
         'papers': '📄',
+        'books': '📚',
         'other': '📎'
     };
     return icons[type] || '📄';
@@ -304,7 +284,7 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
-// Show toast notification
+
 function showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
