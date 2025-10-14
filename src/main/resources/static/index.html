@@ -51,6 +51,41 @@
             </select>
         </div>
     </section>
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-content">
+                <div class="stat-value" id="totalResources">0</div>
+                <div class="stat-label">Total Resources</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📥</div>
+            <div class="stat-content">
+                <div class="stat-value" id="totalDownloads">0</div>
+                <div class="stat-label">Total Downloads</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">📖</div>
+            <div class="stat-content">
+                <div class="stat-value" id="totalSubjects">0</div>
+                <div class="stat-label">Subjects</div>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">🎓</div>
+            <div class="stat-content">
+                <div class="stat-value" id="totalSemesters">0</div>
+                <div class="stat-label">Semesters</div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- Resources List -->
     <section class="resources-section">
@@ -83,6 +118,20 @@
         <p>Built with ❤️ for students, by a student | <a href="https://github.com/ishekaa12/college-resource-hubb" target="_blank">View on GitHub</a></p>
     </div>
 </footer>
+
+<script src="js/main.js"></script>
+<!-- Modal for Resource Details -->
+<div id="detailsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Resource Details</h2>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <!-- Details will be inserted here -->
+        </div>
+    </div>
+</div>
 
 <script src="js/main.js"></script>
 </body>
