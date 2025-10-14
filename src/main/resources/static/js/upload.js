@@ -1,5 +1,5 @@
 // API Base URL
-const API_URL = 'http://localhost:8080/api/resources';  // or whatever port
+const API_BASE_URL = 'https://umbrellaless-condylar-maryln.ngrok-free.dev/api/resources'; // or whatever port
 
 // DOM Elements
 const uploadForm = document.getElementById('uploadForm');

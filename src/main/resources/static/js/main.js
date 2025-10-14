@@ -1,5 +1,6 @@
 // API Base URL
-const API_BASE_URL = `http://${window.location.hostname}:8080/api/resources`;
+// Replace with YOUR ngrok URL (the one you just got)
+const API_BASE_URL = 'https://umbrellaless-condylar-maryln.ngrok-free.dev/api/resources';
 
 // DOM Elements
 const resourcesList = document.getElementById('resourcesList');

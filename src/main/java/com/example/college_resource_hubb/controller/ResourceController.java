@@ -19,9 +19,12 @@ import java.util.List;
 @RequestMapping("/api/resources")
 @CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.OPTIONS})
 public class ResourceController {
-
     @Autowired
     private ResourceService resourceService;
+    @GetMapping("/test")
+    public ResponseEntity<String> test() {
+        return ResponseEntity.ok("CORS is working!");
+    }
 
     @GetMapping("/hello")
     public String hello() {
