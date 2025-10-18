@@ -1,138 +1,203 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
+    <title>Upload - Resource Hub</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Resource - College Resource Hub</title>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1 { color: #667eea; margin-bottom: 10px; }
+
+        .back {
+            color: #667eea;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .form-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover { opacity: 0.9; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .form-box { padding: 20px; }
+        }
+    </style>
 </head>
 <body>
-<!-- Header -->
-<header class="header">
-    <div class="container">
-        <div class="header-content">
-            <a href="index.html" class="back-link">← Back to Home</a>
-            <h1>📤 Upload New Resource</h1>
-            <p style="font-size: 13px; color: #666; margin-top: 5px;">
-                <a href="guidelines.html" style="color: #667eea;">📜 View upload guidelines</a>
-            </p>
-        </div>
-    </div>
-</header>
+<div class="container">
+    <header>
+        <a href="index.html" class="back">← Back to Home</a>
+        <h1> Upload Resource</h1>
+    </header>
 
-<!-- Main Content -->
-<main class="container">
-    <div class="upload-container">
-        <form id="uploadForm" class="upload-form">
-            <!-- File Upload Area -->
-            <div class="file-upload-area" id="fileUploadArea">
-                <div class="upload-icon">📄</div>
-                <h3>Drag & drop your file here</h3>
-                <p>or</p>
-                <label for="fileInput" class="btn btn-secondary">Choose File</label>
-                <input type="file" id="fileInput" accept=".pdf,.jpg,.jpeg,.png" required hidden>
-                <p class="file-hint">Supported: PDF, JPG, PNG (Max 200MB)</p>
-            </div>
-
-            <div id="filePreview" class="file-preview" style="display: none;">
-                <div class="file-info">
-                    <span class="file-icon">📄</span>
-                    <div class="file-details">
-                        <p class="file-name" id="fileName"></p>
-                        <p class="file-size" id="fileSize"></p>
-                    </div>
-                    <button type="button" class="remove-file" id="removeFile">✕</button>
-                </div>
-            </div>
-
-            <!-- Form Fields -->
+    <div class="form-box">
+        <form id="form">
             <div class="form-group">
-                <label for="title">Resource Title *</label>
-                <input type="text" id="title" placeholder="e.g., Data Structures Unit 1 Notes" required>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label for="subject">Subject *</label>
-                    <input type="text" id="subject" placeholder="e.g., Data Structures" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="semester">Semester *</label>
-                    <select id="semester" required>
-                        <option value="">Select Semester</option>
-                        <option value="1">Semester 1</option>
-                        <option value="2">Semester 2</option>
-                        <option value="3">Semester 3</option>
-                        <option value="4">Semester 4</option>
-                        <option value="5">Semester 5</option>
-                        <option value="6">Semester 6</option>
-                        <option value="7">Semester 7</option>
-                        <option value="8">Semester 8</option>
-                    </select>
-                </div>
+                <label>Title *</label>
+                <input type="text" id="title" required placeholder="e.g., Data Structures Notes">
             </div>
 
             <div class="form-group">
-                <label for="type">Type *</label>
-                <select id="type" required>
-                    <option value="">Select Type</option>
-                    <option value="notes">Notes</option>
-                    <option value="papers">Previous Papers</option>
-                    <option value="books">Books/Textbooks</option>
-                    <option value="other">Other</option>
+                <label>Subject *</label>
+                <input type="text" id="subject" required placeholder="e.g., Computer Science">
+            </div>
+
+            <div class="form-group">
+                <label>Semester *</label>
+                <select id="semester" required>
+                    <option value="">Select Semester</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
                 </select>
             </div>
 
-                <div class="form-group">
-                    <label for="uploaderName">Your Name (Optional)</label>
-                    <input type="text" id="uploaderName" placeholder="Anonymous">
-                </div>
-
-
-            <!-- Submit Button -->
-            <div class="form-actions">
-                <a href="index.html" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary" id="submitBtn">
-                    <span id="submitText">Upload Resource</span>
-                    <span id="submitLoader" class="btn-loader" style="display: none;">
-                            <span class="spinner-small"></span> Uploading...
-                        </span>
-                </button>
+            <div class="form-group">
+                <label>File * (PDF, JPG, PNG - Max 100MB)</label>
+                <input type="file" id="file" required accept=".pdf,.jpg,.jpeg,.png">
             </div>
+
+            <button type="submit" class="btn" id="submitBtn">Upload</button>
         </form>
 
-        <!-- Success Message -->
-        <div id="successMessage" class="message success" style="display: none;">
-            <span class="message-icon">✅</span>
-            <div>
-                <strong>Success!</strong>
-                <p>Your resource has been uploaded successfully!</p>
-            </div>
-        </div>
+        <div id="message" style="display: none;"></div>
+    </div>
+</div>
 
-        <!-- Error Message -->
-        <div id="errorMessage" class="message error" style="display: none;">
-            <span class="message-icon">❌</span>
-            <div>
-                <strong>Error!</strong>
-                <p id="errorText">Something went wrong. Please try again.</p>
-            </div>
-        </div>
-    </div>
-</main>
-<footer class="footer">
-    <div class="container">
-        <p>
-            Built with ❤️ by <strong>Isheka Singh</strong> for UMIT students
-            <br>
-            <a href="https://github.com/ishekaa12/college-resource-hubb" target="_blank">View on GitHub</a>
-            | <a href="guidelines.html">Guidelines</a>
-            | Problems? Contact: ishekasingh26@gmail.com
-        </p>
-    </div>
-</footer>
-<script src="config.js"></script>
-<script src="js/upload.js"></script>
+<script>
+    // CHANGE THIS URL!
+    const API = 'https://umbrellaless-condylar-maryln.ngrok-free.dev/api';
+
+    document.getElementById('form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById('submitBtn');
+        const msg = document.getElementById('message');
+
+        btn.disabled = true;
+        btn.textContent = 'Uploading...';
+        msg.style.display = 'none';
+
+        try {
+            const formData = new FormData();
+            formData.append('title', document.getElementById('title').value);
+            formData.append('subject', document.getElementById('subject').value);
+            formData.append('semester', document.getElementById('semester').value);
+            formData.append('file', document.getElementById('file').files[0]);
+
+            const response = await fetch(`${API}/upload`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (response.ok) {
+                msg.className = 'message success';
+                msg.textContent = ' Upload successful! Redirecting...';
+                msg.style.display = 'block';
+
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            } else {
+                throw new Error('Upload failed');
+            }
+
+        } catch (error) {
+            msg.className = 'message error';
+            msg.textContent = ' Upload failed. Check backend is running!';
+            msg.style.display = 'block';
+
+            btn.disabled = false;
+            btn.textContent = 'Upload';
+
+            console.error(error);
+        }
+    });
+</script>
 </body>
 </html>
