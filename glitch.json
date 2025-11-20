@@ -1,0 +1,11 @@
+{
+  "install": "./mvnw clean install -DskipTests",
+  "start": "java -jar target/college-resource-hubb-0.0.1-SNAPSHOT.jar",
+  "watch": {
+    "ignore": [
+      "target/",
+      ".git/",
+      "data/"
+    ]
+  }
+}
