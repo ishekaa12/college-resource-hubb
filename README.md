@@ -171,10 +171,5 @@ Email: ishekasingh26@gmail.com
 ⭐ Star this repo if you find it useful!
 Built with ❤️ for students, by a student | October 2025
 
-## 📝 Update It
-```bash
-# In IntelliJ, save the updated README.md, then:
-git add README.md
-git commit -m "Update README with detailed documentation"
-git push
+
 
